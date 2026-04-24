@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parent GuideTool</title>
+  <style>
+    :root{
+      --bg:#fbf7ef; --panel:#fffdf8; --card:#ffffff; --ink:#263238; --muted:#64706b;
+      --brand:#47685a; --brand2:#d9836f; --soft:#f2e7d8; --soft2:#e6f0ea; --line:#e6dccf;
+      --warn:#8a5a1f; --danger:#8d3d36; --ok:#3f6b4f; --shadow:0 14px 40px rgba(42,51,45,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;background:linear-gradient(180deg,var(--bg),#fffaf3);color:var(--ink);line-height:1.55}
+    a{color:var(--brand);font-weight:700;text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{width:min(1160px,92vw);margin:auto}
+    header{position:sticky;top:0;z-index:10;background:rgba(251,247,239,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em}.brand .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),#91b09d);display:grid;place-items:center;color:white;box-shadow:var(--shadow)}
+    .navlinks{display:flex;gap:8px;flex-wrap:wrap}.navlinks a{font-size:14px;color:var(--ink);padding:8px 10px;border-radius:999px}.navlinks a:hover{background:var(--soft2);text-decoration:none}
+    .hero{padding:54px 0 30px}.heroGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:stretch}.heroCard{background:var(--panel);border:1px solid var(--line);border-radius:32px;padding:34px;box-shadow:var(--shadow);position:relative;overflow:hidden}.heroCard:after{content:"";position:absolute;right:-70px;top:-80px;width:220px;height:220px;background:var(--soft2);border-radius:999px;z-index:0}.heroCard>*{position:relative;z-index:1}h1{font-size:clamp(38px,6vw,72px);line-height:.98;margin:0 0 18px;letter-spacing:-.06em}.lead{font-size:clamp(17px,2vw,21px);color:var(--muted);max-width:760px}.pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;font-size:14px;color:#415047}.sideCard{background:linear-gradient(180deg,#ffffff,#f8eee1);border:1px solid var(--line);border-radius:32px;padding:26px;box-shadow:var(--shadow)}.sideCard h3{font-size:22px;margin:0 0 10px}.tiny{font-size:13px;color:var(--muted)}
+    .section{padding:34px 0}.sectionTitle{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}h2{font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0;letter-spacing:-.04em}.sub{color:var(--muted);max-width:760px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 8px 24px rgba(42,51,45,.05)}.card h3{margin:0 0 8px;font-size:20px}.icon{font-size:24px}.muted{color:var(--muted)}
+    .toolbar{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:12px;box-shadow:var(--shadow);position:sticky;top:72px;z-index:8}.toolbar input,.toolbar select{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 14px;font-size:15px;background:white;color:var(--ink)}
+    .stageTrack{display:flex;gap:10px;overflow:auto;padding:12px 2px 18px;scrollbar-width:thin}.stageBtn{min-width:150px;border:1px solid var(--line);background:#fff;border-radius:18px;padding:13px;text-align:left;cursor:pointer;color:var(--ink)}.stageBtn.active{background:var(--brand);color:white;border-color:var(--brand)}.stageBtn b{display:block;font-size:14px}.stageBtn span{display:block;font-size:12px;opacity:.82;margin-top:4px}.agePanel{background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:22px;box-shadow:var(--shadow)}.ageHead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:16px}.badge{background:var(--soft2);color:var(--brand);border-radius:999px;padding:7px 11px;font-weight:800;font-size:13px;white-space:nowrap}.topicGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.topic{border:1px solid var(--line);border-radius:18px;background:white;overflow:hidden}.topic summary{cursor:pointer;padding:15px 16px;font-weight:850;list-style:none;display:flex;justify-content:space-between;gap:12px}.topic summary::-webkit-details-marker{display:none}.topic summary:after{content:"+";color:var(--brand);font-weight:900}.topic[open] summary:after{content:"−"}.topic .body{padding:0 16px 16px;color:#38463f}.topic ul{margin:8px 0 0;padding-left:20px}.topic li{margin:6px 0}.check{display:grid;grid-template-columns:1fr 1fr;gap:12px}.do,.dont{border-radius:18px;padding:15px;border:1px solid var(--line)}.do{background:#f1faf3}.dont{background:#fff3ef}.do h4,.dont h4{margin:0 0 8px}.redflag{background:#fff8e8;border-left:5px solid #d69b40}.support{background:#fff1ef;border-left:5px solid var(--danger)}
+    .library{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.bookCat{background:white;border:1px solid var(--line);border-radius:20px;padding:16px}.bookCat h3{font-size:16px;margin:0 0 8px}.sourceLink{display:inline-block;margin-top:8px;font-size:13px}.scriptGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.scriptBox{background:white;border:1px solid var(--line);border-radius:20px;padding:18px}.scriptBox h3{margin:0 0 8px}.scriptBox ol,.scriptBox ul{margin:8px 0 0;padding-left:20px}.exampleLine{border-left:4px solid var(--soft2);padding-left:12px;margin:12px 0}.printArea{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.printCard{background:white;border:1px dashed #cbbca9;border-radius:20px;padding:18px}.btn{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--brand);color:white;border-radius:999px;padding:12px 16px;font-weight:800;cursor:pointer}.btn.secondary{background:#fff;color:var(--brand);border:1px solid var(--line)}footer{padding:36px 0;color:var(--muted)}.hide{display:none!important}
+    @media(max-width:850px){.heroGrid,.grid,.topicGrid,.library,.printArea,.scriptGrid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr;position:relative;top:0}.nav{align-items:flex-start}.navlinks{display:none}.heroCard{padding:24px}.ageHead{display:block}.badge{display:inline-block;margin-top:8px}.check{grid-template-columns:1fr}}
+    @media print{header,.toolbar,.stageTrack,.btn,.noPrint{display:none!important}body{background:white}.wrap{width:100%}.card,.agePanel,.heroCard,.sideCard,.topic,.printCard{box-shadow:none;break-inside:avoid}.topic{display:block}.topic .body{display:block}.section{padding:12px 0}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <div class="brand"><div class="logo">PG</div><div>Parent GuideTool<br><span class="tiny">Birth to 18 years</span></div></div>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#about">Guide</a><a href="#principles">Principles</a><a href="#ages">Ages</a><a href="#boundaries">Boundaries</a><a href="#library">Library</a><a href="#checklists">Checklists</a><a href="#support">Support</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero wrap" id="home">
+    <div class="heroGrid">
+      <div class="heroCard">
+        <div class="pill">A calm dashboard for real-life parenting</div>
+        <h1>Raise a child with connection, structure, and confidence.</h1>
+        <p class="lead">A practical guide for new parents and busy caregivers. Use it to support your child from day one through the teenage years without perfectionism, fear, or information overload.</p>
+        <div class="pillRow"><span class="pill">Attachment</span><span class="pill">Emotional regulation</span><span class="pill">Identity</span><span class="pill">Healthy boundaries</span><span class="pill">Digital safety</span></div>
+      </div>
+      <aside class="sideCard">
+        <h3>How to use this</h3>
+        <p>Pick your child’s age. Read the snapshot. Choose one or two actions for the week.</p>
+        <p>Come back when your child enters a new phase, when routines get hard, or when you need language for a tough moment.</p>
+        <button class="btn" onclick="window.print()">Print this guide</button>
+      </aside>
+    </div>
+  </section>
+  <section class="section wrap" id="about">
+    <div class="sectionTitle"><div><h2>What this guide is</h2><p class="sub">This site synthesizes common themes from pediatrics, developmental psychology, attachment theory, positive discipline, neuroscience, education, trauma-informed care, neurodiversity-aware parenting, sleep, nutrition, media safety, and family systems.</p></div></div>
+    <div class="grid">
+      <div class="card"><div class="icon">🧭</div><h3>Practical first</h3><p>Every stage gives you simple actions, scripts, routines, and common mistakes to avoid.</p></div>
+      <div class="card"><div class="icon">🌱</div><h3>Development-aware</h3><p>Guidance is organized around what children are usually building at each age.</p></div>
+      <div class="card"><div class="icon">🤝</div><h3>Non-judgmental</h3><p>You do not need to be a perfect parent. Repair, consistency, warmth, and safety matter most.</p></div>
+    </div>
+  </section>
+  <section class="section wrap" id="principles">
+    <div class="sectionTitle"><div><h2>Parenting principles</h2><p class="sub">These ideas show up across trusted child development research and major parenting frameworks.</p></div></div>
+    <div class="grid" id="principleCards"></div>
+  </section>
+  <section class="section wrap" id="ages">
+    <div class="sectionTitle"><div><h2>Age-by-age guide</h2><p class="sub">Search by keyword, filter by topic, then open the cards you need.</p></div></div>
+    <div class="toolbar noPrint">
+      <input id="search" type="search" placeholder="Search sleep, tantrums, confidence, screens, food..." aria-label="Search guide" />
+      <select id="topicFilter" aria-label="Filter by topic"><option value="all">All topics</option></select>
+      <select id="ageJump" aria-label="Jump to age"></select>
+    </div>
+    <div class="stageTrack noPrint" id="stageTrack"></div>
+    <div id="agePanel" class="agePanel"></div>
+  </section>
+
+  <section class="section wrap" id="boundaries">
+    <div class="sectionTitle"><div><h2>Kind Words, Firm Boundaries tool</h2><p class="sub">Added as an original companion module inspired by the public resource title <a href="https://thegentleparent.gumroad.com/l/kindwords?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denni7zuve4x" target="_blank" rel="noopener">KIND Words FIRM Boundaries</a>. Use this when you want to stay warm without getting pulled into endless negotiation.</p></div></div>
+    <div class="scriptGrid">
+      <div class="scriptBox">
+        <h3>4-step boundary script</h3>
+        <ol>
+          <li><b>Connect first.</b> Name what your child wants or feels.</li>
+          <li><b>State the limit.</b> Use one calm sentence.</li>
+          <li><b>Give the reason.</b> Keep it short, usually safety, health, respect, or family rhythm.</li>
+          <li><b>Offer the next step.</b> Give one choice, one action, or one repair path.</li>
+        </ol>
+        <p class="muted">Simple formula: “You really want ____. The limit is ____. This matters because ____. You can ____ or ____.”</p>
+      </div>
+      <div class="scriptBox">
+        <h3>Boundary planner</h3>
+        <ul>
+          <li><b>Situation:</b> What keeps repeating?</li>
+          <li><b>Boundary:</b> What is the clear rule?</li>
+          <li><b>Kind words:</b> How will you validate the feeling?</li>
+          <li><b>Follow-through:</b> What happens every time?</li>
+          <li><b>Repair:</b> How will you reconnect after the hard part?</li>
+        </ul>
+      </div>
+      <div class="scriptBox">
+        <h3>Everyday examples</h3>
+        <div class="exampleLine"><b>Screen transition</b><br>“You’re having fun. The screen is done now. Your brain needs a break. You can put it on the charger or I can help.”</div>
+        <div class="exampleLine"><b>Hitting</b><br>“You’re angry. I won’t let you hit. Hands stay safe. You can stomp your feet or squeeze this pillow.”</div>
+        <div class="exampleLine"><b>Leaving the park</b><br>“You wish we could stay. It’s time to go home for dinner. Do you want to walk to the car or hold my hand and hop?”</div>
+        <div class="exampleLine"><b>Teen curfew</b><br>“I get that you want more time. The curfew is still 10:30 tonight. Show me a plan for check-ins and we can revisit it next weekend.”</div>
+      </div>
+      <div class="scriptBox">
+        <h3>What to avoid</h3>
+        <ul>
+          <li>Long lectures while your child is dysregulated.</li>
+          <li>Changing the rule because the protest got louder.</li>
+          <li>Using shame, labels, or sarcasm.</li>
+          <li>Offering too many choices when the limit is not optional.</li>
+          <li>Skipping repair because you feel guilty or tired.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="section wrap" id="library">
+    <div class="sectionTitle"><div><h2>Book and resource library</h2><p class="sub">Use these categories to guide your reading. The summaries are original and do not copy book text.</p></div></div>
+    <div class="library" id="libraryGrid"></div>
+  </section>
+  <section class="section wrap" id="checklists">
+    <div class="sectionTitle"><div><h2>Printable checklists</h2><p class="sub">Print the whole page or copy these into your notes app.</p></div><button class="btn secondary" onclick="window.print()">Print</button></div>
+    <div class="printArea">
+      <div class="printCard"><h3>Weekly parent reset</h3><ul><li>Did my child feel seen this week?</li><li>Did we protect sleep, meals, movement, and connection?</li><li>Did I set one clear boundary and hold it calmly?</li><li>Did I repair after a hard moment?</li><li>Did I notice one strength my child is building?</li></ul></div>
+      <div class="printCard"><h3>Before reacting</h3><ul><li>Pause and lower your voice.</li><li>Name what you see.</li><li>Validate the feeling without giving up the boundary.</li><li>Offer one next step.</li><li>Reconnect after the moment passes.</li></ul></div>
+      <div class="printCard"><h3>Kind words, firm boundaries</h3><ul><li>Connect: “I see you really want this.”</li><li>Limit: “The rule is still the rule.”</li><li>Reason: “This keeps us safe, healthy, or respectful.”</li><li>Next step: “You can choose A or B.”</li><li>Repair: “That was hard. We’re okay. Let’s try again.”</li></ul></div>
+      <div class="printCard"><h3>Family values check</h3><ul><li>What do we want our child to feel at home?</li><li>What routines protect that feeling?</li><li>Which battles are not worth having?</li><li>Where do we need more consistency?</li></ul></div>
+      <div class="printCard"><h3>Digital safety check</h3><ul><li>No screens replace sleep, meals, play, school, or friendships.</li><li>Use shared spaces for younger kids.</li><li>Discuss content, privacy, ads, bullying, and consent.</li><li>Model the phone habits you want them to learn.</li></ul></div>
+    </div>
+  </section>
+  <section class="section wrap" id="support">
+    <div class="sectionTitle"><div><h2>When to seek professional support</h2><p class="sub">Most development has a wide normal range. Get support when your gut says something is off, when stress is persistent, or when daily life is becoming harder for your child or family.</p></div></div>
+    <div class="card support"><h3>Reach out to a pediatrician, family doctor, child psychologist, therapist, speech-language pathologist, occupational therapist, dietitian, or school support team when needed.</h3><ul><li>Loss of skills your child previously had.</li><li>Feeding, sleep, breathing, growth, or safety concerns.</li><li>Delayed speech, limited social connection, or major sensory distress.</li><li>Frequent aggression, self-harm talk, extreme anxiety, depression, isolation, or school refusal.</li><li>Family stress, trauma, grief, conflict, burnout, or caregiver depression.</li></ul></div>
+  </section>
+</main>
+<footer class="wrap"><p>Parent GuideTool is educational and does not replace medical, mental health, or emergency care. Evidence base includes synthesized public guidance from CDC developmental milestones and parenting resources, American Academy of Pediatrics media guidance, Harvard Center on the Developing Child, WHO Nurturing Care Framework, UNICEF parenting resources, and broad published parenting literature categories. This version also includes an original boundary-script module inspired by the public title KIND Words FIRM Boundaries, without copying paid content.</p></footer>
+<script>
+const principles=[['Responsive care','Notice your child’s cues, respond warmly, and repeat often. Small back-and-forth moments build trust, language, and brain connections.','💬'],['Safe structure','Children do better when life has predictable rhythms. Warmth and limits work best together.','🏡'],['Repair matters','You will lose patience sometimes. Apologize, reconnect, and show your child how healthy relationships recover.','🧩'],['Feelings are allowed','All feelings are welcome. All behaviors are not. Name the emotion, hold the limit, and teach the next skill.','🌦️'],['Identity grows slowly','Children build identity through belonging, choice, culture, family stories, competence, and being accepted as they are.','🌈'],['Independence needs practice','Do not do everything for your child. Give age-safe responsibilities and let them struggle a little with support.','🛠️']];
+const topics=['Development snapshot','Parent focus','Connection and attachment','Communication examples','Play and learning','Emotional regulation','Structure and routines','Identity and confidence','Discipline and boundaries','Sleep and food guidance','Digital exposure guidance','Common mistakes to avoid','Red flags to watch for','Simple weekly parent actions','Do and don’t checklist'];
+function makeStage(age,one,two,three){return{age,tag:one,focus:two,summary:three,details:{
+'Development snapshot':[three,'Development is uneven. Look for progress over time, not perfect timelines.'],
+'Parent focus':[two,'Protect safety, connection, sleep, nutrition, movement, and calm routines before adding more.'],
+'Connection and attachment':['Use warm eye contact, gentle touch, predictable responses, and repair after hard moments.','Connection does not mean saying yes to everything. It means your child knows you are on their side.'],
+'Communication examples':['“I’m here. You’re safe.”','“That was hard. Let’s try again.”','“I won’t let you hit. I’ll help you use words or take space.”'],
+'Play and learning':['Follow your child’s interest for a few minutes every day.','Use books, songs, movement, nature, pretend play, building, chores, and conversation.'],
+'Emotional regulation':['Co-regulate first. Teach later.','Name the feeling, lower stimulation, breathe, and return to the lesson when calm.'],
+'Structure and routines':['Keep wake-up, meals, outdoor time, cleanup, bedtime, and transition cues predictable.','Use fewer rules and repeat them often.'],
+'Identity and confidence':['Notice effort, kindness, curiosity, courage, honesty, and persistence.','Let your child have safe choices and family roles.'],
+'Discipline and boundaries':['Use the kind words, firm boundaries pattern: connect first, state the limit, give one brief reason, then offer the next step.','Use clear limits, natural consequences, redirection, practice, and repair.','Avoid shame, threats, labels, and long lectures.'],
+'Sleep and food guidance':['Protect sleep as a family priority. Keep food routines calm and predictable.','Offer variety without turning meals into pressure battles.'],
+'Digital exposure guidance':['Screens should not crowd out sleep, movement, reading, face-to-face connection, play, or school responsibilities.','Co-view when possible and keep devices out of bedrooms at night.'],
+'Common mistakes to avoid':['Expecting adult self-control before the brain is ready.','Confusing obedience with emotional health.','Using screens, snacks, or lectures as the only calming tools.'],
+'Red flags to watch for':['Loss of skills, ongoing feeding or sleep concerns, extreme withdrawal, persistent aggression, major delays, or caregiver burnout.','Ask for help early. Early support is a strength.'],
+'Simple weekly parent actions':['Choose one routine to make easier.','Give ten minutes of child-led attention.','Name one strength out loud.','Repair one moment you wish went better.'],
+'Do and don’t checklist':{do:['Be warm and consistent.','Use simple words.','Protect sleep and connection.','Ask for help when needed.'],dont:['Do not shame feelings.','Do not compare siblings or peers.','Do not expect perfection from yourself.','Do not ignore persistent concerns.']}
+}}}
+const stages=[
+makeStage('Day 1 to 3 months','Safety and bonding','Feed, sleep, soothe, recover, and learn your baby’s cues.','Newborns need closeness, feeding support, safe sleep, diaper care, and calm repetition. Their brain is learning whether the world is safe.'),
+makeStage('3 to 6 months','Rhythm and response','Build small routines and respond to smiles, sounds, and body cues.','Babies become more social, alert, and playful. They learn through faces, voices, touch, movement, and repeated care.'),
+makeStage('6 to 12 months','Exploration with safety','Support movement, babbling, food exploration, and secure attachment.','Babies may crawl, sit, pull up, imitate sounds, try foods, and show separation anxiety. Curiosity grows fast.'),
+makeStage('12 to 18 months','First independence','Give safe choices, simple words, and firm safety limits.','Toddlers want to move, touch, climb, point, and try. They understand more than they can say.'),
+makeStage('18 to 24 months','Big feelings','Help your toddler handle frustration with simple routines and calm limits.','Language is growing, but emotional control is still early. Tantrums are communication, not manipulation.'),
+makeStage('2 to 3 years','Autonomy and practice','Use routines, choices, playful cooperation, and short explanations.','Children build independence, pretend play, toilet readiness, and stronger opinions. They still need lots of help shifting gears.'),
+makeStage('3 to 5 years','Social learning','Teach sharing, repair, problem solving, body safety, and confidence.','Preschoolers ask questions, test limits, create stories, and learn friendship skills through practice.'),
+makeStage('6 to 8 years','Competence','Build responsibility, reading, friendships, movement, and emotional vocabulary.','School-age children compare themselves with others and need encouragement tied to effort and strategy.'),
+makeStage('9 to 12 years','Belonging and values','Support identity, friendships, body changes, responsibility, and digital judgment.','Tweens seek privacy and peer connection while still needing family warmth and structure.'),
+makeStage('13 to 15 years','Autonomy with guardrails','Stay connected while setting expectations around sleep, school, peers, devices, and safety.','Young teens feel things intensely. They need respect, privacy, coaching, and clear family limits.'),
+makeStage('16 to 18 years','Launch preparation','Shift from manager to coach while practicing real-world independence.','Older teens need trust, accountability, life skills, identity support, and room to make recoverable mistakes.')];
+// Customize age-specific details
+stages[0].details['Sleep and food guidance']=['Use safe sleep practices and follow feeding guidance from your clinician.','Expect frequent waking. Newborn sleep is not a character test for the baby or parent.'];
+stages[0].details['Digital exposure guidance']=['No screen use is needed for babies, except family video calls.','Your face, voice, touch, and movement are the best stimulation.'];
+stages[0].details['Communication examples']=['“I hear you. I’m coming.”','“You’re fed, dry, and held. We’ll get through this.”','“I need a pause. I’m placing you safely down and taking three breaths.”'];
+stages[1].details['Play and learning']=['Smile, copy sounds, sing, read short books, offer tummy time, and let your baby track safe objects.','Pause after sounds so your baby can respond.'];
+stages[2].details['Sleep and food guidance']=['Introduce foods based on readiness and professional guidance. Keep feeding calm and supervised.','Maintain sleep routines, knowing regressions often happen with growth and mobility.'];
+stages[3].details['Discipline and boundaries']=['Use prevention first. Move unsafe items, block danger, and redirect.','Say what to do, not only what not to do.'];
+stages[4].details['Emotional regulation']=['Tantrums often mean hunger, fatigue, overload, or wanting control.','Hold the boundary with fewer words. Comfort without giving in to unsafe behavior.'];
+stages[5].details['Communication examples']=['“You want the blue cup. The red cup is clean today.”','“You can walk to the bath or I can carry you.”','“I won’t let you throw blocks. Blocks are for building.”'];
+stages[6].details['Identity and confidence']=['Avoid labels like shy, bossy, bad, dramatic, or genius. Describe behavior and effort instead.','Teach body boundaries, consent, names for body parts, and trusted adults.'];
+stages[7].details['Structure and routines']=['Use visual routines for morning, homework, chores, and bedtime.','Give real jobs such as packing a bag, feeding a pet, setting the table, or tracking reading.'];
+stages[8].details['Digital exposure guidance']=['Create family media rules before conflict starts. Discuss privacy, ads, group chats, gaming, algorithms, and kindness.','Delay private device access as long as practical and use shared charging outside bedrooms.'];
+stages[8].details['Communication examples']=['“You can disagree with us. You still need to speak respectfully.”','“Tell me what feels hard about this.”','“Let’s solve the problem, not attack the person.”'];
+stages[9].details['Discipline and boundaries']=['Use collaborative problem solving when possible. Agree on expectations, privileges, consequences, and repair steps before issues happen.','Consequences should teach responsibility, not humiliation.'];
+stages[9].details['Red flags to watch for']=['Major mood changes, self-harm talk, substance use, disordered eating signs, dangerous peers, school refusal, or sudden isolation need support.','Take teen distress seriously, even when they act like they do not want help.'];
+stages[10].details['Parent focus']=['Coach decision-making, money, time management, relationships, health, digital judgment, school or work planning, and home responsibilities.','Let them practice independence while you remain emotionally available.'];
+stages[10].details['Communication examples']=['“I trust you to think this through. Walk me through your plan.”','“What support do you want from me?”','“You are almost an adult. That means more freedom and more responsibility.”'];
+stages[10].details['Digital exposure guidance']=['Talk about reputation, consent, privacy, misinformation, pornography, online conflict, scams, and sleep disruption.','Use values and real examples, not panic.'];
+const library=[['Pediatric care books','Use these for health basics, safety, growth, feeding, sleep, illness questions, and when to call a clinician.'],['Child development books','Use these to understand what skills are usually emerging at each age and why behavior changes.'],['Parenting psychology books','Use these for temperament, motivation, family dynamics, and discipline patterns.'],['Attachment parenting books','Use these for bonding, responsiveness, trust, separation, and repair.'],['Positive discipline books','Use these for limits that teach skills without shame or fear.'],['Gentle parenting books','Use these for empathy, co-regulation, and language that respects the child.'],['Authoritative parenting books','Use these for the balance of warmth, structure, expectations, and independence.'],['Kind Words, Firm Boundaries','A practical external resource to pair warmth with calm limits. The site includes an original companion tool above so you can practice the idea without copying any paid content.','https://thegentleparent.gumroad.com/l/kindwords?utm_source=ig&utm_medium=social&utm_content=link_in_bio&utm_id=97760_v0_s00_e0_tv3_a1denni7zuve4x'],['Montessori and early learning books','Use these for prepared environments, practical life skills, independence, and child-led learning.'],['Brain development books','Use these for executive function, stress, impulse control, and why children need repetition.'],['Emotional intelligence books','Use these for naming feelings, empathy, conflict repair, and problem solving.'],['Trauma-informed parenting books','Use these for safety, triggers, regulation, connection, and healing-centered routines.'],['Sleep support books','Use these to compare approaches and choose a plan that fits your child, values, and health context.'],['Feeding and nutrition books','Use these for responsive feeding, variety, family meals, and reducing food pressure.'],['Screen-time and digital safety books','Use these for media plans, online safety, privacy, gaming, phones, and social media.'],['Neurodiversity-aware parenting books','Use these for sensory needs, ADHD, autism, learning differences, strengths, and accommodations.'],['Teen development books','Use these for puberty, identity, risk, peer pressure, autonomy, and staying connected.']];
+let current=0;
+function renderPrinciples(){document.getElementById('principleCards').innerHTML=principles.map(p=>`<div class="card"><div class="icon">${p[2]}</div><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('')}
+function setupControls(){const tf=document.getElementById('topicFilter');topics.forEach(t=>tf.innerHTML+=`<option value="${t}">${t}</option>`);const aj=document.getElementById('ageJump');stages.forEach((s,i)=>aj.innerHTML+=`<option value="${i}">${s.age}</option>`);aj.onchange=e=>{current=+e.target.value;renderStages();renderAge()};tf.onchange=renderAge;document.getElementById('search').oninput=renderAge}
+function renderStages(){document.getElementById('stageTrack').innerHTML=stages.map((s,i)=>`<button class="stageBtn ${i===current?'active':''}" onclick="current=${i};document.getElementById('ageJump').value=${i};renderStages();renderAge()"><b>${s.age}</b><span>${s.tag}</span></button>`).join('')}
+function renderAge(){const s=stages[current], q=document.getElementById('search').value.toLowerCase().trim(), f=document.getElementById('topicFilter').value;let entries=Object.entries(s.details).filter(([k,v])=>f==='all'||k===f).filter(([k,v])=>(k+' '+JSON.stringify(v)).toLowerCase().includes(q));document.getElementById('agePanel').innerHTML=`<div class="ageHead"><div><h2>${s.age}</h2><p class="sub"><b>${s.focus}</b><br>${s.summary}</p></div><span class="badge">${s.tag}</span></div><div class="topicGrid">${entries.map(([k,v])=>renderTopic(k,v)).join('')||'<p>No matches. Try a broader search.</p>'}</div>`}
+function renderTopic(k,v){if(k==='Do and don’t checklist'){return`<details class="topic" open><summary>${k}</summary><div class="body check"><div class="do"><h4>Do</h4><ul>${v.do.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="dont"><h4>Don’t</h4><ul>${v.dont.map(x=>`<li>${x}</li>`).join('')}</ul></div></div></details>`}let cls=k.includes('Red flags')?' redflag':'';return`<details class="topic${cls}"><summary>${k}</summary><div class="body"><ul>${v.map(x=>`<li>${x}</li>`).join('')}</ul></div></details>`}
+function renderLibrary(){document.getElementById('libraryGrid').innerHTML=library.map(x=>`<div class="bookCat"><h3>${x[0]}</h3><p class="muted">${x[1]}</p>${x[2]?`<a class="sourceLink" href="${x[2]}" target="_blank" rel="noopener">Open resource</a>`:''}</div>`).join('')}
+renderPrinciples();setupControls();renderStages();renderAge();renderLibrary();
+</script>
+</body>
+</html>
